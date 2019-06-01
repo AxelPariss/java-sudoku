@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 public class Sudoku {
 
+	private boolean showLogs = false;
 	private int m_map[][][] = new int[9][9][9]; // Grille
 	private boolean solved; // Résolu ou non
 	private boolean has_updated; // Vrai si le "round" actuel à permi de faire avancer la résolution
@@ -29,6 +30,16 @@ public class Sudoku {
 		}
 	}
 
+	public void showLogs() {
+		showLogs = true;
+	}
+
+	public void log(String text) {
+		if(showLogs == true){
+			System.out.println(text);
+		}
+	}
+
 	public void resolve() {
 		has_updated = true; // On le définit à true pour démarrer le 1er tour
 
@@ -41,7 +52,6 @@ public class Sudoku {
 
 			solved = checkWin();
 		}
-
 	}
 
 	public boolean hasResolved() {
@@ -102,6 +112,7 @@ public class Sudoku {
 
 						// Si la solution probable est déja utilisée (et qu'elle n'est pas la solution de sa case), on la supprime
 						if(m_map[x][y][z] == (int) used.get(u) && !hasSolvedNumber(y, x)){
+							log("On retire la possibilité "+m_map[x][y][z]+" de la case en ligne:"+x+" et de colonne:"+y+" car ce chiffre est déjà utilisé dans la ligne");
 							m_map[x][y][z] = 0;
 							has_updated = true;
 						}
@@ -141,6 +152,7 @@ public class Sudoku {
 
 						// Si la solution probable est déja utilisée (et qu'elle n'est pas la solution de sa case), on la supprime
 						if(m_map[y][x][z] == (int) used.get(u) && !hasSolvedNumber(x, y)){
+							log("On retire la possibilité "+m_map[y][x][z]+" de la case en ligne:"+y+" et de colonne:"+x+" car ce chiffre est déjà utilisé dans la colonne");
 							m_map[y][x][z] = 0;
 							has_updated = true;
 						}
@@ -183,6 +195,7 @@ public class Sudoku {
 
 								// Si la solution probable est déja utilisée (et qu'elle n'est pas la solution de sa case), on la supprime
 								if (m_map[y][x][z] == (int) used.get(u) && !hasSolvedNumber(x, y)) {
+									log("On retire la possibilité "+m_map[y][x][z]+" de la case en ligne:"+y+" et de colonne:"+x+" car ce chiffre est déjà utilisé dans le bloc courant");
 									m_map[y][x][z] = 0;
 									has_updated = true;
 								}
